@@ -2980,10 +2980,20 @@ class ServerConfig {
 
   /// from local options
   ServerConfig.fromOptions(Map<String, dynamic> options)
-      : idServer = options['custom-rendezvous-server'] ?? "",
-        relayServer = options['relay-server'] ?? "",
-        apiServer = options['api-server'] ?? "",
-        key = options['key'] ?? "";
+      : idServer = _getOptionOrDefault(
+            options, 'custom-rendezvous-server', 'remoto.cds-soft.es:21116'),
+        relayServer = _getOptionOrDefault(
+            options, 'relay-server', 'remoto.cds-soft.es:21117'),
+        apiServer = _getOptionOrDefault(options, 'api-server', ''),
+        key = _getOptionOrDefault(
+            options, 'key',
+            'cagIWoZam8tSsocOi+8vSs2NPwaRo+xHFZgeMPoCh08=');
+
+  static String _getOptionOrDefault(
+      Map<String, dynamic> options, String key, String defaultValue) {
+    final value = options[key]?.toString().trim();
+    return value == null || value.isEmpty ? defaultValue : value;
+  }
 }
 
 Widget dialogButton(String text,
